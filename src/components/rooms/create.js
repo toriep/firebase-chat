@@ -7,11 +7,11 @@ import Input from '../general/input';
 class CreateRoom extends Component {
 
     handleSaveRoom = async (values )=> {
-        console.log('Handle Save Room values :', values);
+        // console.log('Handle Save Room values :', values);
 
         const roomId = await this.props.createChatRoom(values);
 
-        console.log('roomId :', roomId);
+        // console.log('roomId :', roomId);
         this.props.history.push(`/rooms/${roomId}`);
     }
 

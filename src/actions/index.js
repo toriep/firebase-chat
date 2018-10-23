@@ -18,6 +18,24 @@
 import types from './types';
 import { db } from '../firebase';
 
+export const createChatRoom = roomDetails => async dispatch => {
+    const botMessage = {
+        message: `Welcome to ${roomDetails.title}`,
+        name: 'Chat-Bot'
+    }
+    const logKey = db.ref('/chat-logs').push().key;
+
+    roomDetails.chatId = logKey;//add key data to room data
+    const roomRef = await db.ref('/chat-rooms').push(roomDetails);
+
+    console.log('roomRef.key :', roomRef.key);
+    console.log('logKey :', logKey);
+
+    await db.ref(`/chat-logs/${logKey}`).push(botMessage);//add first welcome message to chat log
+
+    return roomRef.key;
+}
+
 
 export const getMessages = (chatId) => dispatch => {//get message data
     const dbRef = db.ref(`/chat-logs/${chatId}`);
@@ -59,20 +77,12 @@ export const getRoomList = () => dispatch => {
     });
 }
 
-export const createChatRoom = roomDetails => async dispatch => {
-    const botMessage = {
-        message: `Welcome to ${roomDetails.title}`,
-        name: 'Chat-Bot'
+export const sendMessage = (chatId, message) => dispatch => {
+
+    const newMessage = {
+        message,
+        name: 'Torie'
     }
-    const logKey = db.ref('/chat-logs').push().key;
 
-    roomDetails.chatId = logKey;//add key data to room data
-    const roomRef = await db.ref('/chat-rooms').push(roomDetails);
-
-    console.log('roomRef.key :', roomRef.key);
-    console.log('logKey :', logKey);
-
-    await db.ref(`/chat-logs/${logKey}`).push(botMessage);//add first welcome message to chat log
-
-    return roomRef.key;
+    db.ref(`/chat-logs/${chatId}`).push(newMessage);
 }
