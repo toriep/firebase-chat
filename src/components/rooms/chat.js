@@ -30,7 +30,6 @@ class Chat extends Component {
     }
 
     render() {
-        console.log('Chat this.props :', this.props);
         const { description, messages, title, topic } = this.props;
         const messageElement = Object.keys(messages).map(key => {
             const { name, message } = messages[key]

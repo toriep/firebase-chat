@@ -48,6 +48,17 @@ export const getRoomInfo = roomId => dispatch => {//get room data
     return dbRef;
 }
 
+export const getRoomList = () => dispatch => {
+    const dbRef = db.ref(`/chat-rooms`);
+
+    dbRef.on('value', snapshot => {
+        dispatch({
+            type: types.GET_ROOM_LIST,
+            roomList: snapshot.val()
+        });
+    });
+}
+
 export const createChatRoom = roomDetails => async dispatch => {
     const botMessage = {
         message: `Welcome to ${roomDetails.title}`,
